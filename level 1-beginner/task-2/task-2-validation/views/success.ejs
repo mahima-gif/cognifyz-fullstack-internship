@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+
+<div style="max-width: 650px; margin: 40px auto; text-align: center;">
+
+  <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 48px 36px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.04);">
+    
+    <!-- Success Icon Badge -->
+    <div style="width: 72px; height: 72px; border-radius: 50%; background-color: #ecfdf5; color: #10b981; display: inline-flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
+      ✓
+    </div>
+
+    <!-- Title and Greeting -->
+    <h1 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">
+      Registration Successful!
+    </h1>
+    <p style="margin: 0 0 24px 0; font-size: 16px; color: #475569;">
+      Welcome aboard, <strong style="color: #2563eb;"><%= name %></strong>! Your account details have been validated by both client and server layers.
+    </p>
+
+    <!-- Info Box: Temporary Storage Explanation -->
+    <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; text-align: left; margin-bottom: 32px;">
+      <h3 style="margin: 0 0 10px 0; font-size: 14px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 8px;">
+        <span>🔒</span> Security &amp; Storage Summary
+      </h3>
+      <ul style="margin: 0; padding-left: 20px; font-size: 13.5px; color: #64748b; line-height: 1.6;">
+        <li>Your password was encrypted using <strong style="color: #0f172a;">bcryptjs</strong> with 10 salt rounds before storage.</li>
+        <li>Your record has been appended to the server's temporary in-memory JavaScript array.</li>
+        <li>Total registered users in this session: <strong style="color: #0f172a;"><%= totalUsers %></strong>.</li>
+      </ul>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div style="display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;">
+      <a href="/users" 
+         style="display: inline-flex; align-items: center; gap: 8px; background-color: #2563eb; color: #ffffff; text-decoration: none; font-size: 14.5px; font-weight: 600; padding: 12px 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3); transition: background-color 0.15s;"
+         onmouseover="this.style.backgroundColor='#1d4ed8';"
+         onmouseout="this.style.backgroundColor='#2563eb';">
+        <span>View Registered Users Table &rarr;</span>
+      </a>
+
+      <a href="/register" 
+         style="display: inline-flex; align-items: center; gap: 8px; background-color: #ffffff; color: #334155; text-decoration: none; font-size: 14.5px; font-weight: 600; padding: 12px 24px; border-radius: 8px; border: 1px solid #cbd5e1; transition: background-color 0.15s;"
+         onmouseover="this.style.backgroundColor='#f8fafc'; this.style.borderColor='#94a3b8';"
+         onmouseout="this.style.backgroundColor='#ffffff'; this.style.borderColor='#cbd5e1';">
+        <span>Register Another User</span>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>
+

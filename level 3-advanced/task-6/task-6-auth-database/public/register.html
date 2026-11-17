@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - SecureTasks</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand-icon" style="margin: 0 auto 0.75rem auto; width: 44px; height: 44px; font-size: 1.25rem;">ST</div>
+        <h1>Create Account</h1>
+        <p>Start organizing your tasks with robust security</p>
+      </div>
+
+      <!-- Server / Form Error Alert Box -->
+      <div id="form-alert" style="display: none; background-color: var(--danger-bg); border-left: 4px solid var(--danger); color: var(--danger-text); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.875rem;"></div>
+
+      <form id="register-form" novalidate>
+        <div class="form-group">
+          <label for="name" class="form-label">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            placeholder="Jane Doe"
+            required
+            autocomplete="name"
+          >
+          <div class="form-error" id="name-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="you@example.com"
+            required
+            autocomplete="email"
+          >
+          <div class="form-error" id="email-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="••••••••"
+            required
+            autocomplete="new-password"
+          >
+          <div class="input-hint">Minimum 8 characters with at least 1 letter and 1 number.</div>
+          <div class="form-error" id="password-error"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm-password"
+            class="form-control"
+            placeholder="••••••••"
+            required
+            autocomplete="new-password"
+          >
+          <div class="form-error" id="confirm-password-error"></div>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn btn-primary btn-block">
+          Create Account
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.875rem;">
+        <span class="text-muted">Already have an account?</span>
+        <a href="/login.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="/js/register.js"></script>
+</body>
+</html>

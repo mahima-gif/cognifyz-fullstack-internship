@@ -1,0 +1,210 @@
+<%- include('partials/header') %>
+
+<section class="card">
+  <h1>Contact &amp; Registration Form</h1>
+  <p class="lead">Fill out the form below to test basic server-side form handling and validation.</p>
+
+  <!-- Error Alert Display (Rendered dynamically if validation fails on the server) -->
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error" role="alert">
+      <span>&#9888; <strong>Validation Error:</strong> <%= error %></span>
+    </div>
+  <% } %>
+
+  <!-- Form configured with POST method targeting the /submit endpoint -->
+  <form action="/submit" method="POST" novalidate>
+    
+    <!-- 1. Full Name (Text, Required) -->
+    <div class="form-group">
+      <label for="name">
+        Full Name <span class="required-badge">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        placeholder="e.g. Jane Doe" 
+        value="<%= (typeof formData !== 'undefined' && formData.name) ? formData.name : '' %>"
+        required
+      >
+    </div>
+
+    <!-- 2. Email Address (Email, Required) -->
+    <div class="form-group">
+      <label for="email">
+        Email Address <span class="required-badge">*</span>
+      </label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        placeholder="e.g. jane@example.com" 
+        value="<%= (typeof formData !== 'undefined' && formData.email) ? formData.email : '' %>"
+        required
+      >
+    </div>
+
+    <!-- 3. Age (Number, Min 1, Max 120) -->
+    <div class="form-group">
+      <label for="age">Age</label>
+      <input 
+        type="number" 
+        id="age" 
+        name="age" 
+        min="1" 
+        max="120" 
+        placeholder="e.g. 21" 
+        value="<%= (typeof formData !== 'undefined' && formData.age) ? formData.age : '' %>"
+      >
+    </div>
+
+    <!-- 4. Gender (Radio buttons grouped in a semantic fieldset) -->
+    <fieldset>
+      <legend>Gender</legend>
+      <div class="options-group">
+        <div class="option-item">
+          <input 
+            type="radio" 
+            id="gender-female" 
+            name="gender" 
+            value="Female"
+            <%= (typeof formData !== 'undefined' && formData.gender === 'Female') ? 'checked' : '' %>
+          >
+          <label for="gender-female">Female</label>
+        </div>
+        <div class="option-item">
+          <input 
+            type="radio" 
+            id="gender-male" 
+            name="gender" 
+            value="Male"
+            <%= (typeof formData !== 'undefined' && formData.gender === 'Male') ? 'checked' : '' %>
+          >
+          <label for="gender-male">Male</label>
+        </div>
+        <div class="option-item">
+          <input 
+            type="radio" 
+            id="gender-other" 
+            name="gender" 
+            value="Other"
+            <%= (typeof formData !== 'undefined' && formData.gender === 'Other') ? 'checked' : '' %>
+          >
+          <label for="gender-other">Other</label>
+        </div>
+        <div class="option-item">
+          <input 
+            type="radio" 
+            id="gender-prefer-not" 
+            name="gender" 
+            value="Prefer not to say"
+            <%= (typeof formData !== 'undefined' && formData.gender === 'Prefer not to say') ? 'checked' : '' %>
+          >
+          <label for="gender-prefer-not">Prefer not to say</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 5. Country (Select dropdown with at least 5 options) -->
+    <div class="form-group">
+      <label for="country">Country</label>
+      <select id="country" name="country">
+        <option value="">-- Please Select Country --</option>
+        <option value="India" <%= (typeof formData !== 'undefined' && formData.country === 'India') ? 'selected' : '' %>>India</option>
+        <option value="United States" <%= (typeof formData !== 'undefined' && formData.country === 'United States') ? 'selected' : '' %>>United States</option>
+        <option value="United Kingdom" <%= (typeof formData !== 'undefined' && formData.country === 'United Kingdom') ? 'selected' : '' %>>United Kingdom</option>
+        <option value="Canada" <%= (typeof formData !== 'undefined' && formData.country === 'Canada') ? 'selected' : '' %>>Canada</option>
+        <option value="Australia" <%= (typeof formData !== 'undefined' && formData.country === 'Australia') ? 'selected' : '' %>>Australia</option>
+        <option value="Germany" <%= (typeof formData !== 'undefined' && formData.country === 'Germany') ? 'selected' : '' %>>Germany</option>
+      </select>
+    </div>
+
+    <!-- 6. Interests (Checkboxes: Web Development, Data Science, Design, Cloud, AI/ML) -->
+    <fieldset>
+      <legend>Areas of Interest</legend>
+      <div class="options-group">
+        <% 
+          // Helper check to keep checkboxes checked if form re-renders
+          const selectedInterests = (typeof formData !== 'undefined' && formData.interests) 
+            ? (Array.isArray(formData.interests) ? formData.interests : [formData.interests]) 
+            : [];
+        %>
+        <div class="option-item">
+          <input 
+            type="checkbox" 
+            id="interest-web" 
+            name="interests" 
+            value="Web Development"
+            <%= selectedInterests.includes('Web Development') ? 'checked' : '' %>
+          >
+          <label for="interest-web">Web Development</label>
+        </div>
+
+        <div class="option-item">
+          <input 
+            type="checkbox" 
+            id="interest-datascience" 
+            name="interests" 
+            value="Data Science"
+            <%= selectedInterests.includes('Data Science') ? 'checked' : '' %>
+          >
+          <label for="interest-datascience">Data Science</label>
+        </div>
+
+        <div class="option-item">
+          <input 
+            type="checkbox" 
+            id="interest-design" 
+            name="interests" 
+            value="Design"
+            <%= selectedInterests.includes('Design') ? 'checked' : '' %>
+          >
+          <label for="interest-design">Design</label>
+        </div>
+
+        <div class="option-item">
+          <input 
+            type="checkbox" 
+            id="interest-cloud" 
+            name="interests" 
+            value="Cloud"
+            <%= selectedInterests.includes('Cloud') ? 'checked' : '' %>
+          >
+          <label for="interest-cloud">Cloud</label>
+        </div>
+
+        <div class="option-item">
+          <input 
+            type="checkbox" 
+            id="interest-aiml" 
+            name="interests" 
+            value="AI/ML"
+            <%= selectedInterests.includes('AI/ML') ? 'checked' : '' %>
+          >
+          <label for="interest-aiml">AI/ML</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 7. Message (Textarea) -->
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea 
+        id="message" 
+        name="message" 
+        rows="4" 
+        placeholder="Type your message or notes here..."
+      ><%= (typeof formData !== 'undefined' && formData.message) ? formData.message : '' %></textarea>
+    </div>
+
+    <!-- 8. Submit Button -->
+    <div class="button-group">
+      <button type="submit" class="btn btn-primary">Submit Form</button>
+      <a href="/" class="btn btn-secondary">Cancel</a>
+    </div>
+
+  </form>
+</section>
+
+<%- include('partials/footer') %>
+

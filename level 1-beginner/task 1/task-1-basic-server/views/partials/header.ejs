@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Dynamic title passed from Express route with safe fallback -->
+  <title><%= typeof title !== 'undefined' ? title : 'Task 1: Basic Server' %></title>
+  <!-- Link to the public static stylesheet -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Semantic Header Section -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="/" class="brand-link">Cognifyz Dev &bull; Task 1</a>
+      <!-- Semantic Navigation -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/contact">Contact Form</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Semantic Main Wrapper (Closed in footer.ejs) -->
+  <main class="container">
+

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SecureTasks</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <a href="/dashboard.html" class="brand">
+      <div class="brand-icon">ST</div>
+      <span>SecureTasks</span>
+    </a>
+
+    <div class="nav-user">
+      <div class="user-badge">
+        <span id="user-display-name">Loading...</span>
+        <span id="user-role-badge" class="badge badge-user">User</span>
+      </div>
+
+      <!-- Admin Portal Navigation (only visible if user.role === 'admin') -->
+      <a href="/admin.html" id="admin-nav-link" class="btn btn-secondary btn-sm" style="display: none;">
+        Admin Portal
+      </a>
+
+      <button id="logout-btn" class="btn btn-secondary btn-sm">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <!-- Stats Overview Cards -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon total">📋</div>
+        <div>
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-label">Total Tasks</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon pending">⏳</div>
+        <div>
+          <div class="stat-value" id="stat-pending">0</div>
+          <div class="stat-label">Pending</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon progress">⚡</div>
+        <div>
+          <div class="stat-value" id="stat-in-progress">0</div>
+          <div class="stat-label">In Progress</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon completed">✓</div>
+        <div>
+          <div class="stat-value" id="stat-completed">0</div>
+          <div class="stat-label">Completed</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toolbar: Search, Filters, and New Task Action -->
+    <section class="toolbar">
+      <div class="filter-group">
+        <input
+          type="text"
+          id="search-input"
+          class="form-control search-input"
+          placeholder="🔍 Search title or description..."
+        >
+
+        <select id="status-filter" class="form-control select-filter">
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        <select id="priority-filter" class="form-control select-filter">
+          <option value="">All Priorities</option>
+          <option value="low">Low Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="high">High Priority</option>
+        </select>
+
+        <select id="sort-filter" class="form-control select-filter">
+          <option value="-createdAt">Newest First</option>
+          <option value="createdAt">Oldest First</option>
+          <option value="dueDate">Due Date (Earliest)</option>
+          <option value="-dueDate">Due Date (Latest)</option>
+        </select>
+      </div>
+
+      <button id="add-task-btn" class="btn btn-primary">
+        + New Task
+      </button>
+    </section>
+
+    <!-- Tasks Grid Container -->
+    <section id="tasks-container" class="task-grid">
+      <!-- Task cards will be rendered dynamically here using secure textContent -->
+    </section>
+
+    <!-- Pagination Controls -->
+    <div id="pagination-container" class="pagination" style="display: none;">
+      <button id="prev-page-btn" class="btn btn-secondary btn-sm" disabled>Previous</button>
+      <span id="page-info" class="text-sm font-semibold" style="margin: 0 0.75rem;">Page 1 of 1</span>
+      <button id="next-page-btn" class="btn btn-secondary btn-sm" disabled>Next</button>
+    </div>
+  </main>
+
+  <!-- Add / Edit Task Modal -->
+  <div id="task-modal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">Create New Task</h3>
+        <button id="close-modal-btn" class="modal-close" aria-label="Close Modal">&times;</button>
+      </div>
+
+      <form id="task-form" novalidate>
+        <div class="modal-body">
+          <input type="hidden" id="task-id">
+
+          <div class="form-group">
+            <label for="task-title" class="form-label">Task Title *</label>
+            <input
+              type="text"
+              id="task-title"
+              class="form-control"
+              placeholder="e.g., Complete security audit report"
+              required
+              minlength="3"
+              maxlength="100"
+            >
+            <div class="form-error" id="task-title-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="task-description" class="form-label">Description (Optional)</label>
+            <textarea
+              id="task-description"
+              class="form-control"
+              rows="3"
+              placeholder="Provide additional details or context..."
+              maxlength="500"
+            ></textarea>
+            <div class="form-error" id="task-desc-error"></div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="task-status" class="form-label">Status</label>
+              <select id="task-status" class="form-control">
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="task-priority" class="form-label">Priority</label>
+              <select id="task-priority" class="form-control">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="task-due-date" class="form-label">Due Date (Optional)</label>
+            <input type="date" id="task-due-date" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancel-task-btn" class="btn btn-secondary">Cancel</button>
+          <button type="submit" id="save-task-btn" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="modal-backdrop">
+    <div class="modal" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--danger);">Confirm Delete</h3>
+        <button id="close-delete-modal" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to permanently delete this task?</p>
+        <p class="text-sm font-semibold" style="margin-top: 0.5rem; color: var(--text-main);" id="delete-task-title"></p>
+        <p class="text-sm text-muted" style="margin-top: 0.25rem;">This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancel-delete-btn" class="btn btn-secondary">Cancel</button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>

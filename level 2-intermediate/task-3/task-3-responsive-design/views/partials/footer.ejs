@@ -1,0 +1,108 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-top py-5">
+    <div class="container">
+      <div class="row g-4 justify-content-between">
+        <!-- Column 1: Brand & Bio -->
+        <div class="col-lg-4 col-md-6">
+          <div class="footer-brand mb-3 d-flex align-items-center gap-2">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="#6366f1" />
+              <path d="M35 50 L45 60 L65 40" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="footer-brand-name">Nova<strong>Tech</strong> Solutions</span>
+          </div>
+          <p class="footer-bio mb-4">
+            Empowering forward-thinking enterprises with resilient cloud architectures, bespoke full-stack applications, and state-of-the-art AI systems built for scale.
+          </p>
+          <div class="footer-socials d-flex gap-2">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="NovaTech on GitHub">
+              <i class="bi bi-github" aria-hidden="true"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="NovaTech on LinkedIn">
+              <i class="bi bi-linkedin" aria-hidden="true"></i>
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="NovaTech on X (Twitter)">
+              <i class="bi bi-twitter-x" aria-hidden="true"></i>
+            </a>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="NovaTech Community Discord">
+              <i class="bi bi-discord" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Navigation Links -->
+        <div class="col-lg-2 col-md-6 col-6">
+          <h2 class="footer-heading mb-3">Company</h2>
+          <ul class="list-unstyled footer-nav-list mb-0">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Projects</a></li>
+            <li><a href="#pricing">Pricing Plans</a></li>
+            <li><a href="#team">Leadership</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Tech & Solutions -->
+        <div class="col-lg-2 col-md-6 col-6">
+          <h2 class="footer-heading mb-3">Capabilities</h2>
+          <ul class="list-unstyled footer-nav-list mb-0">
+            <li><a href="#services">Cloud DevOps</a></li>
+            <li><a href="#services">Web Architecture</a></li>
+            <li><a href="#services">Machine Learning</a></li>
+            <li><a href="#services">Mobile Platforms</a></li>
+            <li><a href="#services">Cyber Defense</a></li>
+            <li><a href="#faq">Client FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Newsletter -->
+        <div class="col-lg-3 col-md-6">
+          <h2 class="footer-heading mb-3">Engineering Newsletter</h2>
+          <p class="footer-newsletter-text mb-3">
+            Subscribe for monthly architectural breakdowns, cloud benchmarks, and tech insights. No spam ever.
+          </p>
+          <form class="footer-newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NovaTech insights!');">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Enter your email" aria-label="Your work email address" required>
+              <button class="btn btn-primary-gradient px-3" type="submit" aria-label="Subscribe to newsletter">
+                <i class="bi bi-send-fill" aria-hidden="true"></i>
+              </button>
+            </div>
+            <small class="form-text text-muted d-block mt-2">Zero spam. Unsubscribe at any time.</small>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+      <p class="mb-0 text-muted small">
+        &copy; <%= new Date().getFullYear() %> NovaTech Solutions Inc. All rights reserved. Built for Cognifyz Internship Task 3.
+      </p>
+      <div class="d-flex align-items-center gap-3 small">
+        <a href="#about" class="text-muted text-decoration-none hover-link">Privacy Policy</a>
+        <span class="text-muted" aria-hidden="true">&bull;</span>
+        <a href="#services" class="text-muted text-decoration-none hover-link">Terms of Service</a>
+        <span class="text-muted" aria-hidden="true">&bull;</span>
+        <a href="#home" class="text-muted text-decoration-none hover-link">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating Back to Top Button -->
+<button id="backToTop" class="btn btn-back-to-top" type="button" aria-label="Back to top of page" title="Back to top">
+  <i class="bi bi-chevron-up" aria-hidden="true"></i>
+</button>
+
+<!-- Bootstrap 5.3.3 Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Custom App Logic -->
+<script src="/js/main.js"></script>
+</body>
+</html>
+

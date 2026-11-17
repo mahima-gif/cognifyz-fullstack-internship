@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityPulse API Showcase — Level 4 Expert Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+  <!-- Top Navigation Bar -->
+  <nav class="navbar" role="navigation" aria-label="Main Navigation">
+    <div class="nav-brand">
+      <span class="brand-logo" aria-hidden="true">🌐</span>
+      <div class="brand-text">
+        <span class="brand-name">CityPulse</span>
+        <span class="brand-tag">API Showcase • Level 4 Expert</span>
+      </div>
+      <span id="demo-mode-badge" class="badge badge-demo hidden">DEMO MODE ACTIVE</span>
+    </div>
+
+    <!-- Sticky Navigation Jump Links -->
+    <div class="nav-links">
+      <a href="#panel-oauth" class="nav-pill">Step 1: OAuth 2.0</a>
+      <a href="#panel-external" class="nav-pill">Step 2: External APIs</a>
+      <a href="#panel-ratelimit" class="nav-pill">Step 3: Rate Limiting</a>
+      <a href="#panel-errors" class="nav-pill">Step 3: Error Handling</a>
+      <a href="#panel-logs" class="nav-pill">Step 3: Cache &amp; Logs</a>
+    </div>
+
+    <div class="nav-user" id="user-profile-section">
+      <img id="user-avatar" class="user-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23334155'/%3E%3C/svg%3E" alt="Authenticated user avatar">
+      <div class="user-info">
+        <span id="user-display-name" class="user-name">Loading...</span>
+        <span id="user-username" class="user-handle">@username</span>
+      </div>
+      <button id="logout-btn" class="btn btn-outline-danger btn-sm" aria-label="Log out of session">Log out</button>
+    </div>
+  </nav>
+
+  <!-- Global Alert Container for Notifications & Rate Limit Countdowns -->
+  <div class="dashboard-container">
+    <div id="status-container" class="status-container" aria-live="polite"></div>
+
+    <!-- ====================================================================
+         PANEL 1: STEP 1 - OAUTH 2.0 AUTHENTICATION & GITHUB API
+         ==================================================================== -->
+    <section id="panel-oauth" class="showcase-panel">
+      <div class="panel-header">
+        <div class="panel-step-badge">STEP 1</div>
+        <div class="panel-title-group">
+          <h2>OAuth 2.0 Secure Authentication &amp; GitHub Integration</h2>
+          <p class="panel-subtitle">
+            Proves authorization code flow, state-backed CSRF protection, and server-side token usage to query GitHub's API on behalf of the user.
+          </p>
+        </div>
+      </div>
+
+      <!-- Security Notice Callout -->
+      <div class="security-banner">
+        <span class="security-icon" aria-hidden="true">🔒</span>
+        <div class="security-text">
+          <strong>Zero-Trust Token Architecture:</strong> The OAuth access token is stored strictly in the server's session memory. It is <em>never sent to the client browser</em>, logged to disk, or exposed in any API response.
+        </div>
+      </div>
+
+      <div class="panel-grid-2">
+        <!-- GitHub Profile Card -->
+        <div class="card github-profile-card">
+          <div class="card-header">
+            <h3>GitHub User Profile (via OAuth Access Token)</h3>
+            <span id="github-profile-cache" class="badge-cache miss">MISS</span>
+          </div>
+
+          <div id="github-profile-loading" class="panel-loading">
+            <div class="spinner-small"></div>
+            <span>Fetching GitHub profile using server token...</span>
+          </div>
+
+          <div id="github-profile-content" class="github-profile-content hidden">
+            <div class="gh-hero">
+              <img id="gh-avatar" class="gh-avatar" src="" alt="GitHub User Avatar">
+              <div class="gh-names">
+                <h4 id="gh-name">User Name</h4>
+                <a id="gh-login" class="gh-link" href="#" target="_blank" rel="noopener noreferrer">@username</a>
+                <p id="gh-bio" class="gh-bio">User bio description...</p>
+              </div>
+            </div>
+
+            <div class="gh-stats-row">
+              <div class="gh-stat">
+                <span class="gh-stat-label">Repositories</span>
+                <span id="gh-repos-count" class="gh-stat-val">--</span>
+              </div>
+              <div class="gh-stat">
+                <span class="gh-stat-label">Followers</span>
+                <span id="gh-followers" class="gh-stat-val">--</span>
+              </div>
+              <div class="gh-stat">
+                <span class="gh-stat-label">Following</span>
+                <span id="gh-following" class="gh-stat-val">--</span>
+              </div>
+            </div>
+
+            <div class="gh-scopes-row">
+              <span class="scopes-label">Granted OAuth Scopes (from <code>X-OAuth-Scopes</code>):</span>
+              <div id="gh-scopes-badges" class="scopes-badges">
+                <!-- Badges dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OAuth 2.0 Authorization Code Flow Visualizer (HTML & CSS Only) -->
+        <div class="card oauth-flow-card">
+          <div class="card-header">
+            <h3>OAuth 2.0 Authorization Code Grant Visualizer</h3>
+            <span class="badge badge-subtle">RFC 6749</span>
+          </div>
+
+          <div class="flow-stepper">
+            <div class="flow-step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong>User clicks "Login"</strong>
+                <p>Browser requests <code>/auth/github</code> to start flow.</p>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong>Redirect with State Token</strong>
+                <p>Server generates random <code>state</code> token (stored in session) to defeat CSRF.</p>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong>User Consent on GitHub</strong>
+                <p>GitHub authenticates user and presents requested scopes (<code>read:user</code>).</p>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="step-num">4</div>
+              <div class="step-body">
+                <strong>Callback with Code</strong>
+                <p>GitHub redirects to <code>/auth/github/callback?code=...&amp;state=...</code></p>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="step-num">5</div>
+              <div class="step-body">
+                <strong>State Verification &amp; Code Exchange</strong>
+                <p>Server verifies state token, then securely exchanges code for access token via back-channel TLS.</p>
+              </div>
+            </div>
+
+            <div class="flow-step">
+              <div class="step-num">6</div>
+              <div class="step-body">
+                <strong>Server Queries GitHub API</strong>
+                <p>Token stored in session; server fetches profile &amp; repos with <code>Authorization: Bearer</code>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Repositories Grid -->
+      <div class="repos-wrapper card">
+        <div class="card-header">
+          <h3>User Public Repositories (<code>/api/github/repos</code>)</h3>
+          <span id="github-repos-cache" class="badge-cache miss">MISS</span>
+        </div>
+
+        <div id="github-repos-loading" class="panel-loading">
+          <div class="spinner-small"></div>
+          <span>Loading public repositories...</span>
+        </div>
+
+        <div id="github-repos-grid" class="repos-grid hidden">
+          <!-- Dynamically populated repo cards -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 2: STEP 2 - EXTERNAL APIS (WEATHER, COUNTRIES & GITHUB)
+         ==================================================================== -->
+    <section id="panel-external" class="showcase-panel">
+      <div class="panel-header">
+        <div class="panel-step-badge">STEP 2</div>
+        <div class="panel-title-group">
+          <h2>External API Integration (Multi-Source Aggregation)</h2>
+          <p class="panel-subtitle">
+            Integrates multiple external services with zero client direct calls: Open-Meteo (Geocoding &amp; Forecast), REST Countries (Metadata), and GitHub API.
+          </p>
+        </div>
+      </div>
+
+      <!-- Search Controls -->
+      <div class="card search-control-card">
+        <form id="search-form" class="search-form">
+          <div class="input-wrapper">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input
+              type="text"
+              id="city-input"
+              class="city-input"
+              placeholder="Search world city (e.g. London, Tokyo, Paris, Mumbai, New York, Sydney)..."
+              required
+              autocomplete="off"
+              maxlength="60"
+            >
+            <button type="submit" id="search-btn" class="btn btn-primary">
+              <span id="btn-text">Explore City</span>
+              <span id="btn-spinner" class="spinner-small hidden"></span>
+            </button>
+          </div>
+
+          <div class="controls-row">
+            <div class="units-toggle">
+              <span class="toggle-label">Units:</span>
+              <div class="toggle-group" role="radiogroup" aria-label="Measurement units">
+                <input type="radio" id="unit-metric" name="units" value="metric" checked>
+                <label for="unit-metric">Metric (°C, km/h)</label>
+
+                <input type="radio" id="unit-imperial" name="units" value="imperial">
+                <label for="unit-imperial">Imperial (°F, mph)</label>
+              </div>
+            </div>
+
+            <div class="quick-chips">
+              <span class="chips-label">Quick test:</span>
+              <button type="button" class="chip-btn" data-city="London">London</button>
+              <button type="button" class="chip-btn" data-city="Tokyo">Tokyo</button>
+              <button type="button" class="chip-btn" data-city="Paris">Paris</button>
+              <button type="button" class="chip-btn" data-city="New York">New York</button>
+              <button type="button" class="chip-btn" data-city="Sydney">Sydney</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Weather & Country Results Grid -->
+      <div id="weather-results" class="results-container">
+        <!-- Telemetry bar -->
+        <div class="meta-status-bar">
+          <div class="meta-left">
+            <h3 id="result-city-heading" class="city-title">London, United Kingdom</h3>
+            <span id="weather-cache-badge" class="badge-cache miss">MISS</span>
+            <span id="weather-source-badge" class="badge badge-source">Source: Open-Meteo</span>
+          </div>
+          <div class="meta-right">
+            <span id="weather-response-time" class="telemetry-pill">Latency: -- ms</span>
+          </div>
+        </div>
+
+        <div class="details-grid">
+          <!-- Weather Card -->
+          <div class="card weather-card">
+            <div class="card-header">
+              <h3>Current Meteorological Conditions</h3>
+              <span id="weather-emoji" class="weather-large-emoji">☀️</span>
+            </div>
+
+            <div class="weather-primary">
+              <div class="temp-display">
+                <span id="current-temp" class="temp-value">--</span>
+                <span id="current-temp-unit" class="temp-unit">°C</span>
+              </div>
+              <div class="weather-condition">
+                <span id="weather-desc" class="condition-name">Loading...</span>
+                <span class="feels-like-label">Feels like <strong id="current-feels-like">--</strong><span id="feels-unit">°C</span></span>
+              </div>
+            </div>
+
+            <div class="weather-metrics-grid">
+              <div class="metric-item">
+                <span class="metric-label">💧 Humidity</span>
+                <span id="current-humidity" class="metric-val">--%</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">💨 Wind Speed</span>
+                <span id="current-wind" class="metric-val">--</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">📍 Latitude</span>
+                <span id="geo-lat" class="metric-val">--</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">📍 Longitude</span>
+                <span id="geo-lon" class="metric-val">--</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Country Metadata Card -->
+          <div class="card country-card" id="country-card">
+            <div class="card-header">
+              <h3>Country Metadata Enrichment</h3>
+              <span id="country-source-badge" class="badge badge-source">Source: REST Countries</span>
+              <span id="country-flag-emoji" class="country-flag-icon">🏳️</span>
+            </div>
+
+            <div id="country-content" class="country-content">
+              <div class="country-hero">
+                <img id="country-flag-img" class="flag-image" src="" alt="National flag">
+                <div class="country-names">
+                  <h4 id="country-common-name">Country Name</h4>
+                  <p id="country-official-name" class="official-name">Official Name</p>
+                </div>
+              </div>
+
+              <div class="country-facts-list">
+                <div class="fact-row">
+                  <span class="fact-title">🏛️ Capital</span>
+                  <span id="country-capital" class="fact-detail">--</span>
+                </div>
+                <div class="fact-row">
+                  <span class="fact-title">🌐 Region</span>
+                  <span id="country-region" class="fact-detail">--</span>
+                </div>
+                <div class="fact-row">
+                  <span class="fact-title">👥 Population</span>
+                  <span id="country-population" class="fact-detail">--</span>
+                </div>
+                <div class="fact-row">
+                  <span class="fact-title">💵 Currencies</span>
+                  <span id="country-currencies" class="fact-detail">--</span>
+                </div>
+                <div class="fact-row">
+                  <span class="fact-title">🗣️ Languages</span>
+                  <span id="country-languages" class="fact-detail">--</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Country fallback for graceful degradation -->
+            <div id="country-unavailable" class="country-unavailable hidden">
+              <p>⚠️ Country details are temporarily unavailable for this region (degraded state).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-Day Forecast Row -->
+        <section class="forecast-section">
+          <h4 class="section-title">5-Day Daily Weather Forecast (Open-Meteo)</h4>
+          <div id="forecast-cards-container" class="forecast-grid">
+            <!-- Dynamically populated forecast cards -->
+          </div>
+        </section>
+
+        <!-- Session Search History -->
+        <div class="history-chips-wrapper">
+          <span class="history-title">Session Search History (Session-Backed):</span>
+          <div id="history-list" class="history-chips">
+            <span class="empty-history-text">No cities searched during this session yet.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 3: STEP 3 - RATE LIMITING & BURST TESTING
+         ==================================================================== -->
+    <section id="panel-ratelimit" class="showcase-panel">
+      <div class="panel-header">
+        <div class="panel-step-badge">STEP 3</div>
+        <div class="panel-title-group">
+          <h2>Rate Limiting &amp; Quota Defense</h2>
+          <p class="panel-subtitle">
+            Protects downstream event loop and upstream third-party quotas with dual-layer limits, standard <code>RateLimit-*</code> headers, and Retry-After countdowns.
+          </p>
+        </div>
+      </div>
+
+      <div class="panel-grid-2">
+        <!-- Live Rate Limit Gauges -->
+        <div class="card rate-limit-card">
+          <div class="card-header">
+            <h3>Live Rate Limit Quota Telemetry</h3>
+            <button id="refresh-limits-btn" class="btn btn-secondary btn-sm" type="button">Refresh Quotas</button>
+          </div>
+
+          <div class="meter-group">
+            <div class="meter-header">
+              <span class="meter-title">Strict External API Limiter</span>
+              <span id="strict-quota-text" class="meter-stats">-- / 20 remaining</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div id="strict-progress-bar" class="progress-bar-fill fill-green" style="width: 100%;"></div>
+            </div>
+            <div class="meter-footer">
+              <span>Scope: Per User / IP on <code>/api/weather</code>, <code>/api/country</code>, <code>/api/demo/error</code></span>
+              <span id="strict-reset-text" class="mono-text">Reset in: --s</span>
+            </div>
+          </div>
+
+          <div class="meter-group">
+            <div class="meter-header">
+              <span class="meter-title">General API Limiter</span>
+              <span id="general-quota-text" class="meter-stats">-- / 100 remaining</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div id="general-progress-bar" class="progress-bar-fill fill-blue" style="width: 100%;"></div>
+            </div>
+            <div class="meter-footer">
+              <span>Scope: Per IP across all <code>/api/*</code> endpoints</span>
+              <span id="general-reset-text" class="mono-text">Reset in: --s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Burst Test Executor -->
+        <div class="card burst-test-card">
+          <div class="card-header">
+            <h3>Automated 25-Request Burst Test</h3>
+            <span class="badge badge-subtle">Strict Limiter Test</span>
+          </div>
+
+          <p class="card-desc">
+            Fires 25 rapid parallel requests to the strict external API limiter (limit = 20/min).
+            Demonstrates immediate transition to HTTP 429 with <code>Retry-After</code> headers.
+          </p>
+
+          <div class="burst-controls">
+            <button id="run-burst-btn" class="btn btn-primary" type="button">
+              <span id="burst-btn-text">🚀 Fire 25 Concurrent Requests</span>
+              <span id="burst-spinner" class="spinner-small hidden"></span>
+            </button>
+          </div>
+
+          <div id="burst-results-box" class="burst-results-box hidden">
+            <div class="burst-stats-grid">
+              <div class="burst-stat">
+                <span class="stat-num color-green" id="burst-count-200">0</span>
+                <span class="stat-lbl">200 OK Accepted</span>
+              </div>
+              <div class="burst-stat">
+                <span class="stat-num color-purple" id="burst-count-429">0</span>
+                <span class="stat-lbl">429 Rate Limited</span>
+              </div>
+              <div class="burst-stat">
+                <span class="stat-num color-cyan" id="burst-count-cache">0</span>
+                <span class="stat-lbl">Cache HITs</span>
+              </div>
+            </div>
+            <div id="burst-status-message" class="burst-message"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 4: STEP 3 - CONTROLLED ERROR SIMULATION
+         ==================================================================== -->
+    <section id="panel-errors" class="showcase-panel">
+      <div class="panel-header">
+        <div class="panel-step-badge">STEP 3</div>
+        <div class="panel-title-group">
+          <h2>Controlled Error Handling &amp; Security Shielding</h2>
+          <p class="panel-subtitle">
+            Demonstrates real error-handling pipelines for upstream faults, client validation, timeouts, and rate limits without leaking internal URLs, passwords, or stack traces.
+          </p>
+        </div>
+      </div>
+
+      <div class="card error-simulation-card">
+        <div class="card-header">
+          <h3>Trigger Production Error Pipelines On Demand</h3>
+          <span class="badge badge-subtle">Central ErrorHandler</span>
+        </div>
+
+        <p class="card-desc">
+          Click any scenario to execute that specific error pathway through the server's real error handling middleware.
+        </p>
+
+        <div class="error-buttons-row">
+          <button type="button" class="btn btn-secondary btn-error-sim" data-error="badinput">
+            ⚠️ 400 Bad Input
+          </button>
+          <button type="button" class="btn btn-secondary btn-error-sim" data-error="notfound">
+            🔍 404 Not Found
+          </button>
+          <button type="button" class="btn btn-secondary btn-error-sim" data-error="timeout">
+            ⏱️ 504 Gateway Timeout
+          </button>
+          <button type="button" class="btn btn-secondary btn-error-sim" data-error="upstream500">
+            💥 502 Upstream 500 Crash
+          </button>
+          <button type="button" class="btn btn-secondary btn-error-sim" data-error="upstream429">
+            🛑 503 Upstream Rate Limited
+          </button>
+          <button type="button" class="btn btn-outline-danger btn-error-sim" id="test-real-404-btn">
+            🌐 Real Weather 404 Check
+          </button>
+        </div>
+
+        <!-- Error Response Inspector -->
+        <div id="error-inspector" class="error-inspector hidden">
+          <div class="inspector-header">
+            <div>
+              <span class="inspector-title">HTTP Response Status:</span>
+              <span id="inspector-status-badge" class="badge-status status-400">400</span>
+            </div>
+            <span class="security-tag">✓ No Stack Trace / No Secrets Leaked</span>
+          </div>
+
+          <div class="inspector-body">
+            <div class="inspector-field">
+              <span class="field-label">User-Facing Message:</span>
+              <p id="inspector-message" class="field-val">--</p>
+            </div>
+
+            <div class="inspector-field">
+              <span class="field-label">Sanitized JSON Body:</span>
+              <pre class="json-box"><code id="inspector-json">{}</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PANEL 5: STEP 3 - CACHE STATS & LIVE REQUEST LOG
+         ==================================================================== -->
+    <section id="panel-logs" class="showcase-panel">
+      <div class="panel-header">
+        <div class="panel-step-badge">STEP 3</div>
+        <div class="panel-title-group">
+          <h2>In-Memory TTL Cache &amp; Live Request Ring Buffer</h2>
+          <p class="panel-subtitle">
+            Monitors cache hits, misses, LRU capacity, and an in-memory ring buffer recording the last 25 authenticated API interactions.
+          </p>
+        </div>
+      </div>
+
+      <!-- Cache Metrics Card -->
+      <div class="card cache-stats-card">
+        <div class="card-header">
+          <h3>In-Memory TTL Cache Metrics (<code>/api/health</code>)</h3>
+          <button id="refresh-cache-btn" class="btn btn-secondary btn-sm" type="button">Refresh Metrics</button>
+        </div>
+
+        <div class="cache-metrics-grid">
+          <div class="cache-metric-box">
+            <span class="cache-metric-label">Cache Entries (Current / Max)</span>
+            <span id="cache-stat-size" class="cache-metric-val">0 / 150</span>
+          </div>
+          <div class="cache-metric-box">
+            <span class="cache-metric-label">Cache Hits (⚡ &lt;3ms)</span>
+            <span id="cache-stat-hits" class="cache-metric-val color-green">0</span>
+          </div>
+          <div class="cache-metric-box">
+            <span class="cache-metric-label">Cache Misses (🌐 Fetched Upstream)</span>
+            <span id="cache-stat-misses" class="cache-metric-val color-amber">0</span>
+          </div>
+          <div class="cache-metric-box">
+            <span class="cache-metric-label">Hit Ratio (%)</span>
+            <span id="cache-stat-ratio" class="cache-metric-val color-cyan">0.0%</span>
+          </div>
+          <div class="cache-metric-box">
+            <span class="cache-metric-label">Server Process Uptime</span>
+            <span id="cache-stat-uptime" class="cache-metric-val">0s</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Request Log Table -->
+      <div class="card request-log-card">
+        <div class="card-header">
+          <h3>Live Request Ring Buffer (Last 25 Calls for Authenticated User)</h3>
+          <button id="refresh-log-btn" class="btn btn-secondary btn-sm" type="button">Refresh Log</button>
+        </div>
+
+        <div class="table-container">
+          <table class="log-table" aria-label="Recent API Request Logs">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Method</th>
+                <th scope="col">Sanitized Path</th>
+                <th scope="col">Status</th>
+                <th scope="col">Latency</th>
+                <th scope="col">Cache</th>
+              </tr>
+            </thead>
+            <tbody id="log-table-body">
+              <tr>
+                <td colspan="6" class="table-empty">No API calls recorded in this session yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="dashboard-footer">
+    <p>CityPulse API Showcase • Cognifyz Full Stack Internship • Level 4 Expert Task 7</p>
+    <p class="mono-text">Zero credentials stored in client • Server-side OAuth code exchange • LRU TTL Caching</p>
+  </footer>
+
+  <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>

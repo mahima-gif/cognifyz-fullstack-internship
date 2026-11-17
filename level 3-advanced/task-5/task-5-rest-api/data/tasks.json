@@ -1,0 +1,142 @@
+[
+  {
+    "id": "22222222-2222-4222-8222-222222222222",
+    "title": "Implement Frontend Task Dashboard",
+    "description": "Build responsive task cards, filter controls, modal dialogs, and toast notifications using vanilla JS.",
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2026-11-18T18:00:00.000Z",
+    "createdAt": "2026-11-05T10:15:00.000Z",
+    "updatedAt": "2026-11-12T11:20:00.000Z"
+  },
+  {
+    "id": "33333333-3333-4333-8333-333333333333",
+    "title": "Write Automated API Test Suite",
+    "description": "Test all CRUD operations, filtering, sorting, pagination, and validation errors with node:test.",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": "2026-11-15T12:00:00.000Z",
+    "createdAt": "2026-11-08T08:30:00.000Z",
+    "updatedAt": "2026-11-08T08:30:00.000Z"
+  },
+  {
+    "id": "44444444-4444-4444-8444-444444444444",
+    "title": "Review Security and Input Sanitization",
+    "description": "Ensure textContent is used to render user strings to prevent XSS and test bad payload handling.",
+    "status": "pending",
+    "priority": "high",
+    "dueDate": "2026-11-11T20:00:00.000Z",
+    "createdAt": "2026-11-09T13:45:00.000Z",
+    "updatedAt": "2026-11-09T13:45:00.000Z"
+  },
+  {
+    "id": "55555555-5555-4555-8555-555555555555",
+    "title": "Compile Task 5 Technical Documentation",
+    "description": "Document architectural layers, API reference, curl commands, and REST principles in README.md.",
+    "status": "pending",
+    "priority": "low",
+    "dueDate": "2026-11-25T23:59:59.000Z",
+    "createdAt": "2026-11-10T16:00:00.000Z",
+    "updatedAt": "2026-11-10T16:00:00.000Z"
+  },
+  {
+    "id": "eb3e4b41-aaed-4312-850e-abb5fd65148e",
+    "title": "Rapid Test Task #0",
+    "description": "Testing write queue integrity under rapid concurrent load #0",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.655Z",
+    "updatedAt": "2026-11-13T09:47:58.655Z"
+  },
+  {
+    "id": "ab61dbd1-44fc-41ba-ada5-cbe71d0d392e",
+    "title": "Rapid Test Task #1",
+    "description": "Testing write queue integrity under rapid concurrent load #1",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.714Z",
+    "updatedAt": "2026-11-13T09:47:58.714Z"
+  },
+  {
+    "id": "b593a7ae-850b-402e-b094-de118709ca84",
+    "title": "Rapid Test Task #2",
+    "description": "Testing write queue integrity under rapid concurrent load #2",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.725Z",
+    "updatedAt": "2026-11-13T09:47:58.725Z"
+  },
+  {
+    "id": "a5bbce18-b5f8-4d80-93bd-ea9d6099d210",
+    "title": "Rapid Test Task #3",
+    "description": "Testing write queue integrity under rapid concurrent load #3",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.734Z",
+    "updatedAt": "2026-11-13T09:47:58.734Z"
+  },
+  {
+    "id": "382f38cf-f5af-4197-83ca-50b733de9488",
+    "title": "Rapid Test Task #4",
+    "description": "Testing write queue integrity under rapid concurrent load #4",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.737Z",
+    "updatedAt": "2026-11-13T09:47:58.737Z"
+  },
+  {
+    "id": "48be0769-c226-4e62-99f5-7c34c580afa2",
+    "title": "Rapid Test Task #5",
+    "description": "Testing write queue integrity under rapid concurrent load #5",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.741Z",
+    "updatedAt": "2026-11-13T09:47:58.741Z"
+  },
+  {
+    "id": "44e48622-09ba-4094-9cae-b694f0c1ead6",
+    "title": "Rapid Test Task #6",
+    "description": "Testing write queue integrity under rapid concurrent load #6",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.744Z",
+    "updatedAt": "2026-11-13T09:47:58.744Z"
+  },
+  {
+    "id": "2c437b7d-db53-4abe-ac1e-6b23d6fd9919",
+    "title": "Rapid Test Task #7",
+    "description": "Testing write queue integrity under rapid concurrent load #7",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.747Z",
+    "updatedAt": "2026-11-13T09:47:58.747Z"
+  },
+  {
+    "id": "f660d732-da6e-46af-af35-51979d041837",
+    "title": "Rapid Test Task #8",
+    "description": "Testing write queue integrity under rapid concurrent load #8",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.751Z",
+    "updatedAt": "2026-11-13T09:47:58.751Z"
+  },
+  {
+    "id": "2d69b23d-7490-4f5b-a947-50d007a5a9ed",
+    "title": "Rapid Test Task #9",
+    "description": "Testing write queue integrity under rapid concurrent load #9",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": null,
+    "createdAt": "2026-11-13T09:47:58.753Z",
+    "updatedAt": "2026-11-13T09:47:58.753Z"
+  }
+]

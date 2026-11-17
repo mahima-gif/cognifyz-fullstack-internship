@@ -1,0 +1,12 @@
+{
+  "name": "task-8-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root workspace proxy for task-8-advanced-server",
+  "scripts": {
+    "start": "npm start --prefix task-8-advanced-server",
+    "dev": "npm run dev --prefix task-8-advanced-server",
+    "worker": "npm run worker --prefix task-8-advanced-server",
+    "test": "npm test --prefix task-8-advanced-server"
+  }
+}

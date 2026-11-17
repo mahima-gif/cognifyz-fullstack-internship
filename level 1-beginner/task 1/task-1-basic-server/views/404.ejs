@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+
+<section class="card" style="text-align: center; padding: 3.5rem 2rem;">
+  <div style="font-size: 4rem; color: #dc2626; font-weight: 800; line-height: 1;">404</div>
+  <h1 style="margin-top: 1rem;">Page Not Found</h1>
+  <p class="lead">
+    The URL <code><%= typeof requestedUrl !== 'undefined' ? requestedUrl : '' %></code> could not be found on this server.
+  </p>
+  <p>Please check the link for typos or navigate back to a known page.</p>
+
+  <div class="button-group" style="justify-content: center; margin-top: 2rem;">
+    <a href="/" class="btn btn-primary">&larr; Return to Home</a>
+    <a href="/contact" class="btn btn-secondary">Go to Contact Form</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+

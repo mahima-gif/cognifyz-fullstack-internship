@@ -1,0 +1,737 @@
+<%- include('partials/header') %>
+
+<div style="max-width: 760px; margin: 0 auto;">
+
+  <!-- Form Card Header -->
+  <div style="background-color: #ffffff; border-radius: 12px 12px 0 0; padding: 28px 32px; border: 1px solid #e2e8f0; border-bottom: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+      <div>
+        <h1 style="margin: 0 0 6px 0; font-size: 24px; font-weight: 800; color: #0f172a;">
+          User Registration Form
+        </h1>
+        <p style="margin: 0; font-size: 14px; color: #64748b;">
+          Complete the form below. Client-side checks provide real-time guidance; server-side checks verify authenticity.
+        </p>
+      </div>
+      <span style="font-size: 12px; font-weight: 600; color: #ef4444; background-color: #fef2f2; padding: 4px 10px; border-radius: 9999px; border: 1px solid #fee2e2;">
+        * Required fields
+      </span>
+    </div>
+
+    <!-- Server Error Banner (if any) -->
+    <% if (errors && Object.keys(errors).length > 0) { %>
+      <div id="server-error-banner" style="margin-top: 20px; background-color: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #ef4444; border-radius: 6px; padding: 14px 16px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 16px;">⚠️</span>
+          <strong style="font-size: 14px; color: #991b1b;">
+            Please fix the <%= Object.keys(errors).length %> error(s) flagged below before continuing:
+          </strong>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Registration Form -->
+  <form id="registrationForm" 
+        action="/register" 
+        method="POST" 
+        novalidate
+        onsubmit="return validateFullForm(event)"
+        style="background-color: #ffffff; border-radius: 0 0 12px 12px; padding: 32px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); display: flex; flex-direction: column; gap: 24px;">
+
+    <!-- =================================================================== -->
+    <!-- 1. NAME FIELDS (First Name & Last Name) -->
+    <!-- =================================================================== -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+      
+      <!-- First Name -->
+      <div style="display: flex; flex-direction: column;">
+        <label for="firstName" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+          First Name <span style="color: #ef4444;">*</span>
+        </label>
+        <input type="text" 
+               id="firstName" 
+               name="firstName" 
+               placeholder="e.g. Alex"
+               value="<%= formData.firstName || '' %>"
+               style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.firstName ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+               onfocus="handleFocus(this)"
+               onblur="handleBlur(this, 'firstName')"
+               oninput="validateField('firstName')">
+        <span id="firstName-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.firstName ? 'block' : 'none' %>;">
+          <%= errors.firstName || '' %>
+        </span>
+      </div>
+
+      <!-- Last Name -->
+      <div style="display: flex; flex-direction: column;">
+        <label for="lastName" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+          Last Name <span style="color: #ef4444;">*</span>
+        </label>
+        <input type="text" 
+               id="lastName" 
+               name="lastName" 
+               placeholder="e.g. Morgan"
+               value="<%= formData.lastName || '' %>"
+               style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.lastName ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+               onfocus="handleFocus(this)"
+               onblur="handleBlur(this, 'lastName')"
+               oninput="validateField('lastName')">
+        <span id="lastName-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.lastName ? 'block' : 'none' %>;">
+          <%= errors.lastName || '' %>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 2. CONTACT FIELDS (Email & Phone) -->
+    <!-- =================================================================== -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+      
+      <!-- Email Address -->
+      <div style="display: flex; flex-direction: column;">
+        <label for="email" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+          Email Address <span style="color: #ef4444;">*</span>
+        </label>
+        <input type="email" 
+               id="email" 
+               name="email" 
+               placeholder="alex.morgan@example.com"
+               value="<%= formData.email || '' %>"
+               style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.email ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+               onfocus="handleFocus(this)"
+               onblur="handleBlur(this, 'email')"
+               oninput="validateField('email')">
+        <span id="email-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.email ? 'block' : 'none' %>;">
+          <%= errors.email || '' %>
+        </span>
+      </div>
+
+      <!-- Phone Number -->
+      <div style="display: flex; flex-direction: column;">
+        <label for="phone" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+          Phone Number (10 Digits) <span style="color: #ef4444;">*</span>
+        </label>
+        <input type="tel" 
+               id="phone" 
+               name="phone" 
+               placeholder="9876543210"
+               maxlength="10"
+               value="<%= formData.phone || '' %>"
+               style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.phone ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+               onfocus="handleFocus(this)"
+               onblur="handleBlur(this, 'phone')"
+               oninput="validateField('phone')">
+        <span id="phone-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.phone ? 'block' : 'none' %>;">
+          <%= errors.phone || '' %>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 3. DATE OF BIRTH -->
+    <!-- =================================================================== -->
+    <div style="display: flex; flex-direction: column;">
+      <label for="dob" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+        Date of Birth (Minimum 13 years old) <span style="color: #ef4444;">*</span>
+      </label>
+      <input type="date" 
+             id="dob" 
+             name="dob" 
+             value="<%= formData.dob || '' %>"
+             style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.dob ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+             onfocus="handleFocus(this)"
+             onblur="handleBlur(this, 'dob')"
+             onchange="validateField('dob')">
+      <span id="dob-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.dob ? 'block' : 'none' %>;">
+        <%= errors.dob || '' %>
+      </span>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 4. PASSWORDS (Password & Confirm Password) -->
+    <!-- =================================================================== -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+      
+      <!-- Password -->
+      <div style="display: flex; flex-direction: column;">
+        <label for="password" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+          Password (min 8 chars, 1 letter, 1 number) <span style="color: #ef4444;">*</span>
+        </label>
+        <input type="password" 
+               id="password" 
+               name="password" 
+               placeholder="••••••••"
+               style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.password ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+               onfocus="handleFocus(this)"
+               onblur="handleBlur(this, 'password')"
+               oninput="validateField('password'); if(document.getElementById('confirmPassword').value) validateField('confirmPassword');">
+        <span id="password-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.password ? 'block' : 'none' %>;">
+          <%= errors.password || '' %>
+        </span>
+      </div>
+
+      <!-- Confirm Password -->
+      <div style="display: flex; flex-direction: column;">
+        <label for="confirmPassword" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+          Confirm Password <span style="color: #ef4444;">*</span>
+        </label>
+        <input type="password" 
+               id="confirmPassword" 
+               name="confirmPassword" 
+               placeholder="••••••••"
+               style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.confirmPassword ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+               onfocus="handleFocus(this)"
+               onblur="handleBlur(this, 'confirmPassword')"
+               oninput="validateField('confirmPassword')">
+        <span id="confirmPassword-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.confirmPassword ? 'block' : 'none' %>;">
+          <%= errors.confirmPassword || '' %>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Show / Hide Password Checkbox Toggle -->
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <input type="checkbox" 
+             id="togglePassword" 
+             onclick="togglePasswordVisibility()" 
+             style="cursor: pointer; width: 16px; height: 16px; accent-color: #2563eb;">
+      <label for="togglePassword" style="font-size: 13px; color: #475569; cursor: pointer; user-select: none;">
+        Show passwords
+      </label>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 5. GENDER (Radio Group with Fieldset / Legend) -->
+    <!-- =================================================================== -->
+    <fieldset style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px 18px; margin: 0;">
+      <legend style="padding: 0 8px; font-size: 13.5px; font-weight: 600; color: #334155;">
+        Gender <span style="color: #ef4444;">*</span>
+      </legend>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-top: 4px;">
+        <% const genders = ['Male', 'Female', 'Other', 'Prefer not to say']; %>
+        <% genders.forEach((g) => { %>
+          <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #334155; cursor: pointer;">
+            <input type="radio" 
+                   name="gender" 
+                   value="<%= g %>"
+                   <%= (formData.gender === g) ? 'checked' : '' %>
+                   style="cursor: pointer; width: 16px; height: 16px; accent-color: #2563eb;"
+                   onchange="validateField('gender')">
+            <span><%= g %></span>
+          </label>
+        <% }); %>
+      </div>
+      <span id="gender-error" style="font-size: 12px; color: #dc2626; margin-top: 8px; font-weight: 500; display: <%= errors.gender ? 'block' : 'none' %>;">
+        <%= errors.gender || '' %>
+      </span>
+    </fieldset>
+
+    <!-- =================================================================== -->
+    <!-- 6. COUNTRY (Select Dropdown) -->
+    <!-- =================================================================== -->
+    <div style="display: flex; flex-direction: column;">
+      <label for="country" style="font-size: 13.5px; font-weight: 600; color: #334155; margin-bottom: 6px;">
+        Country of Residence <span style="color: #ef4444;">*</span>
+      </label>
+      <select id="country" 
+              name="country" 
+              style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; border-radius: 6px; outline: none; background-color: #ffffff; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.country ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1;' %>"
+              onfocus="handleFocus(this)"
+              onblur="handleBlur(this, 'country')"
+              onchange="validateField('country')">
+        <option value="">-- Please Select Your Country --</option>
+        <% 
+          const countries = [
+            'India', 'United States', 'United Kingdom', 'Canada', 
+            'Australia', 'Germany', 'France', 'Japan', 'Brazil', 'Other'
+          ];
+          countries.forEach((c) => { 
+        %>
+          <option value="<%= c %>" <%= (formData.country === c) ? 'selected' : '' %>><%= c %></option>
+        <% }); %>
+      </select>
+      <span id="country-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.country ? 'block' : 'none' %>;">
+        <%= errors.country || '' %>
+      </span>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 7. SKILLS (Checkbox Group with Fieldset / Legend) -->
+    <!-- =================================================================== -->
+    <fieldset style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px 18px; margin: 0;">
+      <legend style="padding: 0 8px; font-size: 13.5px; font-weight: 600; color: #334155;">
+        Technical Skills (Select at least one) <span style="color: #ef4444;">*</span>
+      </legend>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 4px;">
+        <% 
+          const skillList = ['HTML/CSS', 'JavaScript', 'Node.js', 'Express', 'Python', 'Databases'];
+          const selectedSkills = Array.isArray(formData.skills) ? formData.skills : (formData.skills ? [formData.skills] : []);
+          skillList.forEach((skill) => {
+        %>
+          <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: #334155; cursor: pointer; padding: 6px 10px; border-radius: 6px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
+            <input type="checkbox" 
+                   name="skills" 
+                   value="<%= skill %>"
+                   <%= selectedSkills.includes(skill) ? 'checked' : '' %>
+                   style="cursor: pointer; width: 16px; height: 16px; accent-color: #2563eb;"
+                   onchange="validateField('skills')">
+            <span><%= skill %></span>
+          </label>
+        <% }); %>
+      </div>
+      <span id="skills-error" style="font-size: 12px; color: #dc2626; margin-top: 8px; font-weight: 500; display: <%= errors.skills ? 'block' : 'none' %>;">
+        <%= errors.skills || '' %>
+      </span>
+    </fieldset>
+
+    <!-- =================================================================== -->
+    <!-- 8. BIO (Textarea with Live Character Counter) -->
+    <!-- =================================================================== -->
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <label for="bio" style="font-size: 13.5px; font-weight: 600; color: #334155;">
+          Short Bio (Optional)
+        </label>
+        <span id="bio-counter" style="font-size: 12px; font-weight: 600; color: #64748b;">
+          <%= (formData.bio || '').length %> / 200 characters
+        </span>
+      </div>
+      <textarea id="bio" 
+                name="bio" 
+                rows="3" 
+                maxlength="200"
+                placeholder="Share a brief introduction about your background and interests..."
+                style="width: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 14px; font-family: inherit; border-radius: 6px; outline: none; resize: vertical; transition: border-color 0.15s, box-shadow 0.15s; <%= errors.bio ? 'border: 1.5px solid #ef4444; background-color: #fef2f2;' : 'border: 1px solid #cbd5e1; background-color: #ffffff;' %>"
+                onfocus="handleFocus(this)"
+                onblur="handleBlur(this, 'bio')"
+                oninput="updateBioCounter(this); validateField('bio');"><%= formData.bio || '' %></textarea>
+      <span id="bio-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.bio ? 'block' : 'none' %>;">
+        <%= errors.bio || '' %>
+      </span>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 9. TERMS AND CONDITIONS (Checkbox) -->
+    <!-- =================================================================== -->
+    <div style="display: flex; flex-direction: column;">
+      <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer;">
+        <input type="checkbox" 
+               id="terms" 
+               name="terms" 
+               <%= (formData.terms === 'on' || formData.terms === true || formData.terms === 'true') ? 'checked' : '' %>
+               style="cursor: pointer; width: 18px; height: 18px; margin-top: 2px; accent-color: #2563eb;"
+               onchange="validateField('terms')">
+        <span style="font-size: 13.5px; color: #334155; line-height: 1.4;">
+          I agree to the <a href="javascript:void(0)" onclick="alert('Demo Terms: In this exercise, form data is stored temporarily in server memory for educational purposes.');" style="color: #2563eb; text-decoration: underline;">Terms &amp; Conditions</a> and Privacy Policy. <span style="color: #ef4444;">*</span>
+        </span>
+      </label>
+      <span id="terms-error" style="font-size: 12px; color: #dc2626; margin-top: 4px; font-weight: 500; display: <%= errors.terms ? 'block' : 'none' %>;">
+        <%= errors.terms || '' %>
+      </span>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 10. SUBMIT BUTTON & RESET LINK -->
+    <!-- =================================================================== -->
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-top: 8px;">
+      <a href="/register" 
+         style="color: #64748b; font-size: 14px; font-weight: 500; text-decoration: none; padding: 10px 16px; border-radius: 6px; border: 1px solid #e2e8f0; background-color: #ffffff; transition: background-color 0.15s;"
+         onmouseover="this.style.backgroundColor='#f1f5f9';"
+         onmouseout="this.style.backgroundColor='#ffffff';">
+        Clear / Reset Form
+      </a>
+
+      <button type="submit" 
+              id="submitBtn"
+              style="background-color: #2563eb; color: #ffffff; border: none; padding: 12px 28px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3); transition: background-color 0.15s, transform 0.1s;"
+              onmouseover="this.style.backgroundColor='#1d4ed8'; this.style.transform='translateY(-1px)';"
+              onmouseout="this.style.backgroundColor='#2563eb'; this.style.transform='translateY(0)';"
+              onfocus="this.style.outline='3px solid #93c5fd';"
+              onblur="this.style.outline='none';">
+        Create Account &rarr;
+      </button>
+    </div>
+
+  </form>
+
+</div>
+
+<!-- ======================================================================= -->
+<!-- INLINE JAVASCRIPT: CLIENT-SIDE VALIDATION & INTERACTION -->
+<!-- ======================================================================= -->
+<script>
+  /**
+   * Focus Style Handler
+   * Applies an accessible, active visual glow when a field gains focus.
+   */
+  function handleFocus(element) {
+    element.style.borderColor = '#2563eb';
+    element.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.15)';
+  }
+
+  /**
+   * Blur Style Handler
+   * Removes focus glow and performs real-time field validation.
+   */
+  function handleBlur(element, fieldName) {
+    element.style.boxShadow = 'none';
+    validateField(fieldName);
+  }
+
+  /**
+   * Password Visibility Toggle
+   * Toggles the input type between "password" and "text" for both password fields.
+   */
+  function togglePasswordVisibility() {
+    var pass = document.getElementById('password');
+    var confirmPass = document.getElementById('confirmPassword');
+    var isChecked = document.getElementById('togglePassword').checked;
+
+    var newType = isChecked ? 'text' : 'password';
+    if (pass) pass.type = newType;
+    if (confirmPass) confirmPass.type = newType;
+  }
+
+  /**
+   * Live Character Counter for Bio
+   * Updates character count text and turns red if maximum length is approached/exceeded.
+   */
+  function updateBioCounter(textarea) {
+    var counter = document.getElementById('bio-counter');
+    if (!counter) return;
+    var len = textarea.value.length;
+    counter.textContent = len + ' / 200 characters';
+    if (len >= 200) {
+      counter.style.color = '#ef4444';
+    } else {
+      counter.style.color = '#64748b';
+    }
+  }
+
+  /**
+   * Helper: Show Error on Input
+   */
+  function showFieldError(inputElement, errorElement, message) {
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+    if (inputElement && inputElement.style) {
+      inputElement.style.borderColor = '#ef4444';
+      inputElement.style.backgroundColor = '#fef2f2';
+    }
+  }
+
+  /**
+   * Helper: Clear Error & Set Valid State
+   */
+  function showFieldSuccess(inputElement, errorElement) {
+    if (errorElement) {
+      errorElement.textContent = '';
+      errorElement.style.display = 'none';
+    }
+    if (inputElement && inputElement.style) {
+      inputElement.style.borderColor = '#10b981'; // Green border
+      inputElement.style.backgroundColor = '#ffffff';
+    }
+  }
+
+  /**
+   * Individual Field Validator
+   * Validates a single field according to requirements.
+   * @param {string} field - The identifier of the field being validated.
+   * @returns {boolean} - True if valid, false otherwise.
+   */
+  function validateField(field) {
+    var isValid = true;
+    var lettersOnlyRegex = /^[A-Za-z\s]{2,}$/;
+
+    // 1. First Name
+    if (field === 'firstName') {
+      var input = document.getElementById('firstName');
+      var err = document.getElementById('firstName-error');
+      var val = (input.value || '').trim();
+
+      if (!val) {
+        showFieldError(input, err, 'First name is required.');
+        isValid = false;
+      } else if (val.length < 2) {
+        showFieldError(input, err, 'First name must be at least 2 characters.');
+        isValid = false;
+      } else if (!lettersOnlyRegex.test(val)) {
+        showFieldError(input, err, 'First name must contain letters only.');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 2. Last Name
+    if (field === 'lastName') {
+      var input = document.getElementById('lastName');
+      var err = document.getElementById('lastName-error');
+      var val = (input.value || '').trim();
+
+      if (!val) {
+        showFieldError(input, err, 'Last name is required.');
+        isValid = false;
+      } else if (val.length < 2) {
+        showFieldError(input, err, 'Last name must be at least 2 characters.');
+        isValid = false;
+      } else if (!lettersOnlyRegex.test(val)) {
+        showFieldError(input, err, 'Last name must contain letters only.');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 3. Email
+    if (field === 'email') {
+      var input = document.getElementById('email');
+      var err = document.getElementById('email-error');
+      var val = (input.value || '').trim();
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!val) {
+        showFieldError(input, err, 'Email address is required.');
+        isValid = false;
+      } else if (!emailRegex.test(val)) {
+        showFieldError(input, err, 'Please provide a valid email format (e.g. user@example.com).');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 4. Phone
+    if (field === 'phone') {
+      var input = document.getElementById('phone');
+      var err = document.getElementById('phone-error');
+      var val = (input.value || '').trim();
+      var phoneRegex = /^\d{10}$/;
+
+      if (!val) {
+        showFieldError(input, err, 'Phone number is required.');
+        isValid = false;
+      } else if (!phoneRegex.test(val)) {
+        showFieldError(input, err, 'Phone number must be exactly 10 digits.');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 5. Date of Birth (Minimum age 13)
+    if (field === 'dob') {
+      var input = document.getElementById('dob');
+      var err = document.getElementById('dob-error');
+      var val = input.value;
+
+      if (!val) {
+        showFieldError(input, err, 'Date of birth is required.');
+        isValid = false;
+      } else {
+        var dobDate = new Date(val);
+        if (isNaN(dobDate.getTime())) {
+          showFieldError(input, err, 'Please select a valid date.');
+          isValid = false;
+        } else {
+          var today = new Date();
+          var age = today.getFullYear() - dobDate.getFullYear();
+          var monthDiff = today.getMonth() - dobDate.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+            age--;
+          }
+          if (age < 13) {
+            showFieldError(input, err, 'You must be at least 13 years old to register.');
+            isValid = false;
+          } else {
+            showFieldSuccess(input, err);
+          }
+        }
+      }
+    }
+
+    // 6. Password
+    if (field === 'password') {
+      var input = document.getElementById('password');
+      var err = document.getElementById('password-error');
+      var val = input.value || '';
+      var passRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+      if (!val) {
+        showFieldError(input, err, 'Password is required.');
+        isValid = false;
+      } else if (val.length < 8) {
+        showFieldError(input, err, 'Password must be at least 8 characters long.');
+        isValid = false;
+      } else if (!passRegex.test(val)) {
+        showFieldError(input, err, 'Password must contain at least one letter and one number.');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 7. Confirm Password
+    if (field === 'confirmPassword') {
+      var passInput = document.getElementById('password');
+      var input = document.getElementById('confirmPassword');
+      var err = document.getElementById('confirmPassword-error');
+      var val = input.value || '';
+
+      if (!val) {
+        showFieldError(input, err, 'Please confirm your password.');
+        isValid = false;
+      } else if (val !== passInput.value) {
+        showFieldError(input, err, 'Passwords do not match.');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 8. Gender
+    if (field === 'gender') {
+      var err = document.getElementById('gender-error');
+      var selected = document.querySelector('input[name="gender"]:checked');
+      if (!selected) {
+        if (err) {
+          err.textContent = 'Please select a gender option.';
+          err.style.display = 'block';
+        }
+        isValid = false;
+      } else {
+        if (err) {
+          err.textContent = '';
+          err.style.display = 'none';
+        }
+      }
+    }
+
+    // 9. Country
+    if (field === 'country') {
+      var input = document.getElementById('country');
+      var err = document.getElementById('country-error');
+      if (!input.value) {
+        showFieldError(input, err, 'Please select your country.');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 10. Skills
+    if (field === 'skills') {
+      var err = document.getElementById('skills-error');
+      var checkedSkills = document.querySelectorAll('input[name="skills"]:checked');
+      if (checkedSkills.length === 0) {
+        if (err) {
+          err.textContent = 'Please select at least one technical skill.';
+          err.style.display = 'block';
+        }
+        isValid = false;
+      } else {
+        if (err) {
+          err.textContent = '';
+          err.style.display = 'none';
+        }
+      }
+    }
+
+    // 11. Bio
+    if (field === 'bio') {
+      var input = document.getElementById('bio');
+      var err = document.getElementById('bio-error');
+      var val = input.value || '';
+      if (val.length > 200) {
+        showFieldError(input, err, 'Bio cannot exceed 200 characters.');
+        isValid = false;
+      } else {
+        showFieldSuccess(input, err);
+      }
+    }
+
+    // 12. Terms
+    if (field === 'terms') {
+      var input = document.getElementById('terms');
+      var err = document.getElementById('terms-error');
+      if (!input.checked) {
+        if (err) {
+          err.textContent = 'You must agree to the Terms and Conditions to proceed.';
+          err.style.display = 'block';
+        }
+        isValid = false;
+      } else {
+        if (err) {
+          err.textContent = '';
+          err.style.display = 'none';
+        }
+      }
+    }
+
+    return isValid;
+  }
+
+  /**
+   * Full Form Validation on Submission
+   * Validates every field. If any rule fails:
+   *  - Prevents form submission
+   *  - Scrolls to and focuses the first invalid element
+   *  - Returns false
+   */
+  function validateFullForm(event) {
+    var fieldsToValidate = [
+      'firstName', 'lastName', 'email', 'phone', 
+      'dob', 'password', 'confirmPassword', 
+      'gender', 'country', 'skills', 'bio', 'terms'
+    ];
+
+    var formIsValid = true;
+    var firstInvalidElement = null;
+
+    for (var i = 0; i < fieldsToValidate.length; i++) {
+      var fieldName = fieldsToValidate[i];
+      var isFieldValid = validateField(fieldName);
+
+      if (!isFieldValid) {
+        formIsValid = false;
+        if (!firstInvalidElement) {
+          if (fieldName === 'gender') {
+            firstInvalidElement = document.querySelector('input[name="gender"]');
+          } else if (fieldName === 'skills') {
+            firstInvalidElement = document.querySelector('input[name="skills"]');
+          } else {
+            firstInvalidElement = document.getElementById(fieldName);
+          }
+        }
+      }
+    }
+
+    if (!formIsValid) {
+      if (event && event.preventDefault) {
+        event.preventDefault();
+      }
+
+      // Smooth scroll and focus to the first invalid field
+      if (firstInvalidElement) {
+        firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (firstInvalidElement.focus) {
+          firstInvalidElement.focus();
+        }
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+</script>
+
+<%- include('partials/footer') %>
+

@@ -1,0 +1,138 @@
+<%- include('partials/header') %>
+
+<div style="display: flex; flex-direction: column; gap: 24px;">
+
+  <!-- Hero Section Card -->
+  <section style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 12px; padding: 36px 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+    <div style="display: inline-block; background-color: #dbeafe; color: #1e40af; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 12px; border-radius: 9999px; margin-bottom: 12px;">
+      Level 1: Beginner &bull; Task 2
+    </div>
+    <h1 style="margin: 0 0 12px 0; font-size: 30px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">
+      Inline Styles, User Interaction &amp; Server-Side Validation
+    </h1>
+    <p style="margin: 0 0 24px 0; font-size: 16px; color: #475569; max-width: 800px; line-height: 1.6;">
+      This project demonstrates dual-layer form validation in modern web development. Experience how inline styles dynamically reflect validation states, how client-side JavaScript provides immediate user feedback, and how Express guarantees security through robust server-side validation.
+    </p>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center;">
+      <a href="/register" 
+         style="display: inline-flex; align-items: center; gap: 8px; background-color: #2563eb; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; padding: 12px 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3); transition: transform 0.15s, background-color 0.15s;"
+         onmouseover="this.style.backgroundColor='#1d4ed8'; this.style.transform='translateY(-1px)';"
+         onmouseout="this.style.backgroundColor='#2563eb'; this.style.transform='translateY(0)';"
+         onfocus="this.style.outline='3px solid #93c5fd';"
+         onblur="this.style.outline='none';">
+        <span>Open Registration Form &rarr;</span>
+      </a>
+
+      <a href="/users" 
+         style="display: inline-flex; align-items: center; gap: 8px; background-color: #ffffff; color: #334155; text-decoration: none; font-size: 15px; font-weight: 600; padding: 12px 24px; border-radius: 8px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); transition: background-color 0.15s;"
+         onmouseover="this.style.backgroundColor='#f8fafc'; this.style.borderColor='#94a3b8';"
+         onmouseout="this.style.backgroundColor='#ffffff'; this.style.borderColor='#cbd5e1';"
+         onfocus="this.style.outline='3px solid #cbd5e1';"
+         onblur="this.style.outline='none';">
+        <span>View Registered Users</span>
+        <span style="background-color: #e2e8f0; color: #334155; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">
+          <%= userCount %>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Learning Pillars (4 Required Steps) -->
+  <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+    
+    <!-- Step 1 -->
+    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 22px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);">
+      <div style="width: 36px; height: 36px; border-radius: 8px; background-color: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 12px;">
+        1
+      </div>
+      <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color: #1e293b;">
+        Complex HTML5 Form
+      </h3>
+      <p style="margin: 0; font-size: 13.5px; color: #64748b; line-height: 1.5;">
+        Features text inputs, dates, password toggles, radio groups, styled selects, checkboxes, and a live character counter.
+      </p>
+    </div>
+
+    <!-- Step 2 -->
+    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 22px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);">
+      <div style="width: 36px; height: 36px; border-radius: 8px; background-color: #fdf2f8; color: #db2777; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 12px;">
+        2
+      </div>
+      <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color: #1e293b;">
+        Client-Side Validation
+      </h3>
+      <p style="margin: 0; font-size: 13.5px; color: #64748b; line-height: 1.5;">
+        Inline event handlers (<code style="background-color: #f1f5f9; padding: 2px 4px; border-radius: 4px;">onblur</code>, <code style="background-color: #f1f5f9; padding: 2px 4px; border-radius: 4px;">oninput</code>, <code style="background-color: #f1f5f9; padding: 2px 4px; border-radius: 4px;">onsubmit</code>) toggle borders and display errors in real time.
+      </p>
+    </div>
+
+    <!-- Step 3 -->
+    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 22px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);">
+      <div style="width: 36px; height: 36px; border-radius: 8px; background-color: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 12px;">
+        3
+      </div>
+      <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color: #1e293b;">
+        Server-Side Validation
+      </h3>
+      <p style="margin: 0; font-size: 13.5px; color: #64748b; line-height: 1.5;">
+        Re-checks every field in Express, sanitizes inputs, ensures uniqueness (duplicate email check), and returns 400 with retained values.
+      </p>
+    </div>
+
+    <!-- Step 4 -->
+    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 22px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);">
+      <div style="width: 36px; height: 36px; border-radius: 8px; background-color: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 12px;">
+        4
+      </div>
+      <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color: #1e293b;">
+        Temporary Safe Storage
+      </h3>
+      <p style="margin: 0; font-size: 13.5px; color: #64748b; line-height: 1.5;">
+        Stores valid submissions in an in-memory array. Passwords are securely hashed with <code style="background-color: #f1f5f9; padding: 2px 4px; border-radius: 4px;">bcryptjs</code> before storage.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- Educational Section: Client vs Server Validation -->
+  <section style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 28px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);">
+    <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 700; color: #1e293b;">
+      Understanding Validation Architecture
+    </h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+      
+      <!-- Client Side Box -->
+      <div style="border-left: 4px solid #3b82f6; background-color: #f8fafc; padding: 18px 20px; border-radius: 0 8px 8px 0;">
+        <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #1d4ed8;">
+          Client-Side Validation (Browser)
+        </h4>
+        <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; color: #475569; line-height: 1.6;">
+          <li>Executed directly in the browser via JavaScript.</li>
+          <li>Provides instant visual cues before submission (e.g. green border on valid, red on error).</li>
+          <li>Prevents unnecessary HTTP traffic for obvious typos.</li>
+          <li><strong style="color: #b91c1c;">Limitation:</strong> Can be bypassed by disabling JS, modifying DOM, or sending direct API requests via Postman/cURL.</li>
+        </ul>
+      </div>
+
+      <!-- Server Side Box -->
+      <div style="border-left: 4px solid #10b981; background-color: #f8fafc; padding: 18px 20px; border-radius: 0 8px 8px 0;">
+        <h4 style="margin: 0 0 8px 0; font-size: 15px; font-weight: 700; color: #047857;">
+          Server-Side Validation (Node.js/Express)
+        </h4>
+        <ul style="margin: 0; padding-left: 18px; font-size: 13.5px; color: #475569; line-height: 1.6;">
+          <li>Executed on the server before accepting any data into memory or a database.</li>
+          <li>The ultimate defense against malicious payloads, tampering, and invalid formats.</li>
+          <li>Performs database-level checks (e.g., verifying that an email is not already taken).</li>
+          <li><strong style="color: #047857;">Best Practice:</strong> Always validate on both layers for optimal UX and ironclad security.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<%- include('partials/footer') %>
+

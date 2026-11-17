@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpsDesk Server - Advanced Server-Side Architecture</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-logo">⚡</div>
+        <div>
+          <h1>OpsDesk Server</h1>
+          <p class="subtitle">Level 4: Advanced Server-Side Architecture & Dashboard</p>
+        </div>
+      </div>
+      <div class="status-bar" id="statusBar">
+        <div class="status-item">
+          <span class="status-label">Driver Mode</span>
+          <span class="badge" id="modeBadge">DETECTING...</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Server Uptime</span>
+          <span class="status-val" id="uptimeVal">0s</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Queue (Active / Waiting)</span>
+          <span class="status-val" id="queueVal">0 / 0</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Cache Hit Ratio</span>
+          <span class="status-val" id="cacheRatioVal">0.00</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- PANEL 1: STEP 1 - MIDDLEWARE PIPELINE -->
+    <section class="card panel-middleware">
+      <div class="card-header">
+        <div class="step-tag">Step 1</div>
+        <h2>Middleware Pipeline & Request Inspection</h2>
+      </div>
+      <p class="card-desc">
+        Deterministic sequential middleware execution: <code>requestId &gt; responseTime &gt; requestLogger &gt; security &gt; bodyParsers</code>.
+      </p>
+
+      <div class="actions-row">
+        <button id="btnSendTestRequest" class="btn btn-primary">Send Test Request</button>
+        <button id="btnRefreshLogs" class="btn btn-secondary">Refresh Access Log</button>
+      </div>
+
+      <div class="split-display">
+        <div class="sub-panel">
+          <div class="sub-title">Response Headers Inspection</div>
+          <div class="meta-box" id="headersBox">
+            <div class="meta-row"><span class="k">X-Request-Id:</span> <span class="v" id="hdrRequestId">—</span></div>
+            <div class="meta-row"><span class="k">X-Response-Time:</span> <span class="v" id="hdrResponseTime">—</span></div>
+            <div class="meta-row"><span class="k">Status Code:</span> <span class="v" id="hdrStatus">—</span></div>
+            <div class="meta-row"><span class="k">Round-trip Client Latency:</span> <span class="v" id="hdrClientTime">—</span></div>
+          </div>
+        </div>
+
+        <div class="sub-panel">
+          <div class="sub-title">Live Access Log (logs/access.log)</div>
+          <pre class="log-window" id="logWindow">Loading server access log...</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 2: STEP 2 - BACKGROUND JOBS -->
+    <section class="card panel-jobs">
+      <div class="card-header">
+        <div class="step-tag">Step 2</div>
+        <h2>Background Task Queue & Reliable Worker</h2>
+      </div>
+      <p class="card-desc">
+        Asynchronous decoupled background tasks with automatic retries, exponential backoff, progress updates, and idempotency protection.
+      </p>
+
+      <div class="actions-row">
+        <button id="btnQueueEmail" class="btn btn-success">Queue Welcome Email (1.5s)</button>
+        <button id="btnQueueFailingEmail" class="btn btn-danger">Queue Failing Email (3 Retries + Backoff)</button>
+        <button id="btnQueueReport" class="btn btn-purple">Queue Sales Report (5s Progress)</button>
+      </div>
+
+      <div class="jobs-monitor-container">
+        <div class="jobs-header-row">
+          <h3>Active & Recent Jobs</h3>
+          <span class="refresh-indicator" id="jobsPollIndicator">Polling active (1s)</span>
+        </div>
+        <div class="table-responsive">
+          <table class="jobs-table" id="jobsTable">
+            <thead>
+              <tr>
+                <th>Job ID</th>
+                <th>Task Type</th>
+                <th>State</th>
+                <th>Attempts</th>
+                <th>Progress</th>
+                <th>Result / Error</th>
+              </tr>
+            </thead>
+            <tbody id="jobsTableBody">
+              <tr>
+                <td colspan="6" class="empty-cell">No jobs triggered yet. Click one of the buttons above to enqueue!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 3: STEP 3 - CACHING & STAMPEDE PROTECTION -->
+    <section class="card panel-cache">
+      <div class="card-header">
+        <div class="step-tag">Step 3</div>
+        <h2>Server-Side Caching & Stampede Protection</h2>
+      </div>
+      <p class="card-desc">
+        Fast TTL caching over simulated slow database queries (2-second delay). Features single-flight request coalescing to defend against cache stampedes.
+      </p>
+
+      <div class="actions-row">
+        <button id="btnFetchProducts" class="btn btn-primary">Fetch Products (Single)</button>
+        <button id="btnFetchTwice" class="btn btn-accent">Fetch Twice (Miss vs Hit Comparison)</button>
+        <button id="btnStampedeTest" class="btn btn-warning">Stampede Test (10 Concurrent Calls)</button>
+        <button id="btnInvalidateCreate" class="btn btn-outline">Add Product (Invalidate Cache)</button>
+        <button id="btnClearCache" class="btn btn-danger-outline">Flush Cache (Reset)</button>
+      </div>
+
+      <!-- Cache Metrics Dashboard -->
+      <div class="cache-metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">Cache Hits</span>
+          <span class="metric-value text-success" id="statHits">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Cache Misses</span>
+          <span class="metric-value text-warning" id="statMisses">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Total Keys</span>
+          <span class="metric-value" id="statKeys">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Last Operation</span>
+          <span class="metric-value" id="lastCacheBadge">—</span>
+        </div>
+      </div>
+
+      <!-- Side-by-side or Stampede Output Console -->
+      <div class="cache-output-box">
+        <div class="sub-title">Benchmark Results & Latency Output</div>
+        <pre class="code-output" id="cacheResultsWindow">Ready. Click a cache operation above to benchmark.</pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Cognifyz Technologies Full Stack Internship &mdash; Task 8: Advanced Server-Side Functionality</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

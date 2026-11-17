@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<div style="max-width: 580px; margin: 40px auto; text-align: center;">
+
+  <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 48px 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+    
+    <!-- 404 Badge -->
+    <div style="display: inline-block; background-color: #fef2f2; color: #dc2626; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 9999px; border: 1px solid #fee2e2; margin-bottom: 16px;">
+      Error 404: Not Found
+    </div>
+
+    <h1 style="margin: 0 0 12px 0; font-size: 32px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">
+      Page Not Found
+    </h1>
+    
+    <p style="margin: 0 0 20px 0; font-size: 15px; color: #64748b; line-height: 1.6;">
+      The route <code style="background-color: #f1f5f9; color: #ef4444; padding: 2px 6px; border-radius: 4px; font-size: 14px;"><%= path %></code> could not be found on this Express server.
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+      <a href="/" 
+         style="background-color: #2563eb; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 6px; transition: background-color 0.15s;"
+         onmouseover="this.style.backgroundColor='#1d4ed8';"
+         onmouseout="this.style.backgroundColor='#2563eb';">
+        &larr; Return to Home
+      </a>
+
+      <a href="/register" 
+         style="background-color: #ffffff; color: #334155; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 6px; border: 1px solid #cbd5e1; transition: background-color 0.15s;"
+         onmouseover="this.style.backgroundColor='#f8fafc';"
+         onmouseout="this.style.backgroundColor='#ffffff';">
+        Go to Registration
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>

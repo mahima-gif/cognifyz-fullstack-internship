@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console - SecureTasks</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <a href="/dashboard.html" class="brand">
+      <div class="brand-icon">ST</div>
+      <span>SecureTasks</span>
+      <span class="badge badge-admin" style="margin-left: 0.5rem;">Admin Console</span>
+    </a>
+
+    <div class="nav-user">
+      <div class="user-badge">
+        <span id="admin-display-name">Loading...</span>
+        <span class="badge badge-admin">Admin</span>
+      </div>
+
+      <a href="/dashboard.html" class="btn btn-secondary btn-sm">
+        My Tasks Dashboard
+      </a>
+
+      <button id="logout-btn" class="btn btn-secondary btn-sm">
+        Sign Out
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <div style="margin-bottom: 2rem;">
+      <h2>System Administration</h2>
+      <p>Manage all registered platform accounts and oversee global tasks</p>
+    </div>
+
+    <!-- Overview Stats -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon total">👥</div>
+        <div>
+          <div class="stat-value" id="stat-total-users">0</div>
+          <div class="stat-label">Total Users</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon pending">🛡️</div>
+        <div>
+          <div class="stat-value" id="stat-total-admins">0</div>
+          <div class="stat-label">Administrators</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon progress">📊</div>
+        <div>
+          <div class="stat-value" id="stat-total-tasks">0</div>
+          <div class="stat-label">System Tasks</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Users Management Table -->
+    <section class="table-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3>Registered Users</h3>
+        <button id="refresh-users-btn" class="btn btn-secondary btn-sm">↻ Refresh</button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Task Count</th>
+              <th>Joined Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <!-- Rendered dynamically via textContent -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Global Tasks Table -->
+    <section class="table-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3>All System Tasks (Global View)</h3>
+        <button id="refresh-tasks-btn" class="btn btn-secondary btn-sm">↻ Refresh</button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Task Title</th>
+              <th>Owner Name & Email</th>
+              <th>Status</th>
+              <th>Priority</th>
+              <th>Due Date</th>
+            </tr>
+          </thead>
+          <tbody id="tasks-table-body">
+            <!-- Rendered dynamically via textContent -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Delete User Confirmation Modal -->
+  <div id="delete-user-modal" class="modal-backdrop">
+    <div class="modal" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--danger);">Confirm User Deletion</h3>
+        <button id="close-delete-user-modal" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this user account?</p>
+        <p class="text-sm font-semibold" style="margin-top: 0.5rem; color: var(--text-main);" id="delete-user-info"></p>
+        <div style="background-color: var(--danger-bg); border-left: 4px solid var(--danger); padding: 0.75rem; margin-top: 1rem; border-radius: var(--radius-sm);">
+          <strong style="color: var(--danger-text); font-size: 0.8125rem;">Warning: Cascade Delete</strong>
+          <p style="font-size: 0.8125rem; color: var(--danger-text); margin-top: 0.25rem;">
+            Deleting this user will permanently remove all tasks owned by them from the database.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancel-delete-user-btn" class="btn btn-secondary">Cancel</button>
+        <button type="button" id="confirm-delete-user-btn" class="btn btn-danger">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

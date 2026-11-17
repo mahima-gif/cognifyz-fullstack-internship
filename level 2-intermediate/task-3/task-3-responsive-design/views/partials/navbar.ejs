@@ -1,0 +1,77 @@
+<header>
+  <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar" aria-label="Main Navigation">
+    <div class="container">
+      <!-- Brand Logo -->
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
+        <span class="brand-logo-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="navBrandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--primary-color, #4f46e5)" />
+                <stop offset="100%" stop-color="var(--secondary-color, #06b6d4)" />
+              </linearGradient>
+            </defs>
+            <polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="url(#navBrandGrad)" />
+            <path d="M35 50 L45 60 L65 40" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="brand-text">Nova<strong>Tech</strong></span>
+      </a>
+
+      <!-- Controls on right for mobile: Theme toggle + Hamburger -->
+      <div class="d-flex align-items-center gap-2 order-lg-3">
+        <!-- Dark Mode Toggle Button -->
+        <button id="themeToggleBtn" class="btn btn-theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+          <i class="bi bi-moon-stars-fill dark-icon" aria-hidden="true"></i>
+          <i class="bi bi-sun-fill light-icon" aria-hidden="true"></i>
+        </button>
+
+        <!-- Navbar Toggler for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+          aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Desktop Quick CTA -->
+        <a href="#contact" class="btn btn-primary-gradient d-none d-lg-inline-flex align-items-center gap-2 ms-2">
+          <span>Get in Touch</span>
+          <i class="bi bi-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <!-- Collapsible Links -->
+      <div class="collapse navbar-collapse order-lg-2" id="navbarContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#services">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#portfolio">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#pricing">Pricing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#testimonials">Reviews</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#team">Team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#faq">FAQ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+

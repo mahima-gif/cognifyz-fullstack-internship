@@ -1,0 +1,27 @@
+{
+  "name": "task-1-basic-server",
+  "version": "1.0.0",
+  "description": "Task 1 (Level 1: Beginner) - HTML Structure and Basic Server Interaction",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "express",
+    "ejs",
+    "server-side-rendering",
+    "nodejs",
+    "forms"
+  ],
+  "author": "Cognifyz Full Stack Intern",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" style="margin: 0; padding: 0; box-sizing: border-box;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+</head>
+<body style="margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f1f5f9; color: #1e293b; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Main Navigation Bar -->
+  <header style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; padding: 16px 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);">
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+      
+      <!-- Brand Logo / Title -->
+      <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #ffffff;">
+        <div style="background-color: #3b82f6; color: #ffffff; width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.4);">
+          C
+        </div>
+        <div>
+          <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.025em; display: block;">Cognifyz Internship</span>
+          <span style="font-size: 12px; color: #94a3b8; display: block;">Task 2 &bull; Level 1 Validation</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <a href="/" 
+           style="text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 6px; transition: background-color 0.2s; <%= activePage === 'home' ? 'background-color: #3b82f6; color: #ffffff;' : 'color: #cbd5e1; background-color: transparent;' %>"
+           onmouseover="if('<%= activePage %>' !== 'home') this.style.backgroundColor='rgba(255,255,255,0.1)'"
+           onmouseout="if('<%= activePage %>' !== 'home') this.style.backgroundColor='transparent'">
+          Home
+        </a>
+
+        <a href="/register" 
+           style="text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 6px; transition: background-color 0.2s; <%= activePage === 'register' ? 'background-color: #3b82f6; color: #ffffff;' : 'color: #cbd5e1; background-color: transparent;' %>"
+           onmouseover="if('<%= activePage %>' !== 'register') this.style.backgroundColor='rgba(255,255,255,0.1)'"
+           onmouseout="if('<%= activePage %>' !== 'register') this.style.backgroundColor='transparent'">
+          Register Form
+        </a>
+
+        <a href="/users" 
+           style="text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 6px; transition: background-color 0.2s; <%= activePage === 'users' ? 'background-color: #3b82f6; color: #ffffff;' : 'color: #cbd5e1; background-color: transparent;' %>"
+           onmouseover="if('<%= activePage %>' !== 'users') this.style.backgroundColor='rgba(255,255,255,0.1)'"
+           onmouseout="if('<%= activePage %>' !== 'users') this.style.backgroundColor='transparent'">
+          View Users
+        </a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main style="flex: 1 0 auto; width: 100%; max-width: 1100px; margin: 0 auto; padding: 32px 16px; box-sizing: border-box;">
+

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityPulse Dashboard — API Showcase & OAuth 2.0 Integration</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="landing-page">
+  <div class="landing-container">
+    <header class="hero-header">
+      <div class="badge">Cognifyz Full Stack Internship • Level 4 Expert • Task 7 Showcase</div>
+      <h1 class="hero-title">CityPulse API Showcase</h1>
+      <p class="hero-subtitle">
+        An interactive, visual demonstration of modern full-stack API architecture: OAuth 2.0 Authorization Code flow, multi-source external API integration, live rate-limit telemetry, and resilient error recovery.
+      </p>
+    </header>
+
+    <div id="alert-banner" class="alert-banner hidden"></div>
+
+    <main class="landing-card">
+      <div class="card-section">
+        <h2>Explore the 3 Required Steps</h2>
+        <p class="section-desc">
+          Authenticate securely using GitHub OAuth 2.0 to access the complete interactive showcase dashboard.
+          The OAuth access token stays strictly server-side and never touches the browser.
+        </p>
+
+        <div class="action-group">
+          <!-- Primary OAuth Login -->
+          <a id="github-login-btn" href="/auth/github" class="btn btn-github">
+            <svg class="icon" height="22" width="22" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            <span>Continue with GitHub</span>
+          </a>
+
+          <!-- Demo Login for development testing (shown dynamically if server config reports DEMO_MODE=true) -->
+          <div id="demo-section" class="demo-section hidden">
+            <div class="divider"><span>OR FOR TESTING</span></div>
+            <a href="/auth/demo-login" class="btn btn-secondary" id="demo-login-btn">
+              ⚡ Try Demo Login (No GitHub App Needed)
+            </a>
+            <p class="demo-note">
+              Demo mode simulates an authenticated session with a mock GitHub profile so you can immediately explore all 5 showcase panels.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- The 3 Core Requirements Grid -->
+      <div class="architecture-grid">
+        <div class="feature-box">
+          <div class="step-tag">Step 1</div>
+          <div class="feature-icon">🛡️</div>
+          <h3>OAuth 2.0 Security</h3>
+          <p>
+            Authorization code flow with CSRF <code>state</code> verification. Access token stored in server session to query GitHub API (profile &amp; repos).
+          </p>
+        </div>
+        <div class="feature-box">
+          <div class="step-tag">Step 2</div>
+          <div class="feature-icon">🌐</div>
+          <h3>External API Aggregation</h3>
+          <p>
+            Three external integrations: GitHub API (profile/repos), Open-Meteo (geocoding &amp; 5-day weather), and REST Countries (geopolitical facts).
+          </p>
+        </div>
+        <div class="feature-box">
+          <div class="step-tag">Step 3</div>
+          <div class="feature-icon">⚡</div>
+          <h3>Advanced Features</h3>
+          <p>
+            Dual rate limiting (with burst test), in-memory LRU TTL caching (<code>X-Cache: HIT/MISS</code>), controlled error simulations, and live request log.
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="landing-footer">
+      <p>Cognifyz Technologies Full Stack Internship • Level 4: Expert Task 7</p>
+      <p class="mono-text">Showcase Panels: Step 1 (OAuth) • Step 2 (External APIs) • Step 3 (Rate Limiting, Errors &amp; Caching)</p>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { fetchConfig, fetchCurrentUser } from '/js/api.js';
+
+    // Check if user is already logged in; if so, redirect immediately to dashboard
+    (async () => {
+      try {
+        const userRes = await fetchCurrentUser();
+        if (userRes.success && userRes.data) {
+          window.location.href = '/dashboard.html';
+          return;
+        }
+      } catch (_) {
+        // Not authenticated, stay on landing page
+      }
+
+      // Check config to conditionally reveal demo login
+      try {
+        const configRes = await fetchConfig();
+        if (configRes.success && configRes.data?.demoMode) {
+          const demoSection = document.getElementById('demo-section');
+          if (demoSection) {
+            demoSection.classList.remove('hidden');
+          }
+        }
+      } catch (_) {}
+
+      // Check URL search params for errors (e.g. ?error=auth_failed)
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('error');
+      if (error) {
+        const alertBanner = document.getElementById('alert-banner');
+        alertBanner.textContent = 'Authentication was canceled or encountered an error. Please try again.';
+        alertBanner.classList.remove('hidden');
+      }
+    })();
+  </script>
+</body>
+</html>
